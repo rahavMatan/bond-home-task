@@ -6,6 +6,7 @@ import config from './config';
 import errorHandler from './middleware/errorHandler';
 import fourOhFour from './middleware/fourOhFour';
 import root from './routes/root';
+import {connectDB} from './db'
 
 const app = express()
 
@@ -26,4 +27,7 @@ app.use('/', root)
 app.use(fourOhFour)
 app.use(errorHandler)
 
+connectDB()
+
 export default app
+
