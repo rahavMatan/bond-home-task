@@ -8,7 +8,7 @@ export class UserEntity {
 
     constructor({name,birthDate}:CreateUserDTO){
         this.id = randomUUID()
-        this.birthDate = birthDate
+        this.birthDate = new Date(birthDate)
         this.name = name 
     }
 }
