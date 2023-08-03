@@ -11,7 +11,13 @@ const createUserHandler:RequestHandler = async (req,res, next)=>{
     return res.json({user})
 }
 
+const getUserHandler:RequestHandler = (req,res)=>{
+
+}
+
 export const userRouter = express.Router()
+
+userRouter.get('/users/:id', createUserHandler)
 
 userRouter.post('/users', validateRequestBody(createUserDto), createUserHandler)
 

@@ -2,7 +2,7 @@ import { TaskEither } from "../common/Either"
 import { CreateUserDTO } from "./user.dto"
 import { UserEntity } from "./user.entity"
 import { UnderAgeException } from "./user.exception"
-import { addUser } from "./user.repository"
+import { db } from '../db'
 
 const isLegalAge = (birthDay:CreateUserDTO['birthDate'])=>{
     const today = new Date()
@@ -15,6 +15,10 @@ export const createUser = async (userDTO:CreateUserDTO):TaskEither<UserEntity>=>
         return [null, new UnderAgeException()]
     }
     const user:UserEntity = new UserEntity(userDTO)
-    await addUser(user)
+    await db.collection('users').insertOne(user)
     return [user,null]
+}
+
+export const getUseryId = async (id:UserEntity['id']):Promise<UserEntity | null>=>{
+    return db.collection<UserEntity>('users').findOne({id})
 }
