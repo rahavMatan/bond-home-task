@@ -11,3 +11,9 @@ export class InsufficeintInitialBalance extends APIError {
         super(400, 'initial balance too low')
     }
 }
+
+export class NoAccountException extends APIError {
+    constructor(){
+        super(400, 'no such account')
+    }
+}

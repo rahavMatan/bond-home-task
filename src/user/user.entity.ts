@@ -2,7 +2,7 @@ import {UUID, randomUUID} from 'crypto'
 import { CreateUserDTO } from './user.dto'
 
 export class UserEntity {
-    id: UUID
+    id: string
     birthDate: Date
     name: string
 

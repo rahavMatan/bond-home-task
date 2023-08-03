@@ -8,7 +8,7 @@ export enum AccountStatus {
 }
 
 export class AccountEntiy {
-    id:UUID
+    id:string
     userId:UserEntity['id']
     balance: number
     dailyWithrawLimit:number
