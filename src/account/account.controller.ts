@@ -14,7 +14,7 @@ const createAccountHandler:RequestHandler = async (req,res, next)=>{
 const getBalanceHandler:RequestHandler = async (req,res,next)=>{
     const [balance, error] = await getAccountBalance(req.params.account_id, req.params.user_id)
     if(error){
-       return  next(error)
+       return next(error)
     }
     res.json({balance})
 } 

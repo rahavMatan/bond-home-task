@@ -1,16 +1,13 @@
 import { ErrorRequestHandler } from 'express'
 import config from '../config'
+import { APIError } from '../common/APIError'
 
 /**
  * 500 response & log when errors are raised.
  */
-const errorHandler: ErrorRequestHandler = (err, req, res) => {
-    console.error(err);
-    return res.status(500).json({
-        message: config.nodeEnv === 'production' ?
-            'unknown error' :
-            `${err}`
-    })
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    const {statusCode, message} = err instanceof APIError ? err : new APIError(500,'internal error')
+    res.status(statusCode).json({message})
 }
 
 export default errorHandler

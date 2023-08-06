@@ -15,7 +15,6 @@ export const createTransaction = async (
     transactionDto:CreateTransactionDTO, 
     accountId:AccountEntity['id']
     ): TaskEither<TransactionEntity>=> {
-        console.log(111, accountId)
     const account = await db.collection<AccountEntity>('accounts').findOne({id: accountId})
     if(account?.status === AccountStatus.blocked){
         return [null, new AccountBlockedException()]

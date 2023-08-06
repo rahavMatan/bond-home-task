@@ -1,4 +1,4 @@
-import express, { RequestHandler } from "express";
+import express, { NextFunction, RequestHandler , Request, Response} from "express";
 import { validateRequestBody, validateRequestParams } from 'zod-express-middleware';
 import {createUserDto, userIdDTO} from './user.dto'
 import { createUser, userExists } from "./user.service";
@@ -13,9 +13,6 @@ const createUserHandler:RequestHandler = async (req,res, next)=>{
     return res.status(201).json({user})
 }
 
-const getUserHandler:RequestHandler = (req,res)=>{
-
-}
 
 const userExistsGuard:RequestHandler = async (req,res,next)=>{
     if(!await userExists(req.params.user_id)){
@@ -27,8 +24,12 @@ const userExistsGuard:RequestHandler = async (req,res,next)=>{
 export const userRouter = express.Router()
 
 userRouter.post('/users', validateRequestBody(createUserDto), createUserHandler)
-userRouter.use('/users/:user_id', validateRequestParams(userIdDTO), userExistsGuard)
-userRouter.get('/users/:user_id', getUserHandler)
-userRouter.use('/users/:user_id', accountRouter)
+
+userRouter.use(
+    '/users/:user_id', 
+    validateRequestParams(userIdDTO), 
+    userExistsGuard, 
+    accountRouter
+)
 
 
