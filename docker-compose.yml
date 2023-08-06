@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  mongoDB:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongoDATA:/data/db
+
+volumes:
+  mongoDATA:
