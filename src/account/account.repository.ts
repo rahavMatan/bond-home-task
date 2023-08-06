@@ -1,6 +1,6 @@
 import {db} from '../db'
-import { AccountEntiy } from "./account.entity";
+import { AccountEntity } from "./account.entity";
 
-export const addAccount = async (account: AccountEntiy)=>{
+export const addAccount = async (account: AccountEntity)=>{
     return db.collection('accounts').insertOne(account)
 }

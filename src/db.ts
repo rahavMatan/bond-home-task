@@ -2,7 +2,7 @@ import { MongoClient, Db } from 'mongodb'
 
 // Connection URL
 const url = 'mongodb://localhost:27017';
-const client = new MongoClient(url, { family:4 });
+export const client = new MongoClient(url, { family:4 });
 
 // Database Name
 const dbName = 'BondAcconting';

@@ -2,8 +2,7 @@ import { z } from "zod";
 import { AccountStatus } from "./account.entity";
 
 export const createAccountDTO = z.object({
-    user_id:z.string().uuid(),
-    balance: z.number(),
+    balance: z.number().positive(),
     dailyWithrawLimit: z.number()
 })
 

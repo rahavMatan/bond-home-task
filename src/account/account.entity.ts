@@ -7,7 +7,7 @@ export enum AccountStatus {
     blocked = "blocked"
 }
 
-export class AccountEntiy {
+export class AccountEntity {
     id:string
     userId:UserEntity['id']
     balance: number
@@ -15,9 +15,9 @@ export class AccountEntiy {
     status:AccountStatus
     createdAt: Date
     
-    constructor({user_id, balance, dailyWithrawLimit}:CreateAccountDTO){
+    constructor({ balance, dailyWithrawLimit}:CreateAccountDTO, userId:UserEntity['id']){
         this.id = randomUUID()
-        this.userId = user_id as UUID;
+        this.userId = userId
         this.balance = balance
         this.createdAt = new Date()
         this.status = AccountStatus.active

@@ -22,3 +22,7 @@ export const createUser = async (userDTO:CreateUserDTO):TaskEither<UserEntity>=>
 export const getUseryId = async (id:UserEntity['id']):Promise<UserEntity | null>=>{
     return db.collection<UserEntity>('users').findOne({id})
 }
+
+export const userExists = async (id:UserEntity['id']):Promise<boolean>=>{
+    return await db.collection<UserEntity>('users').countDocuments({id}) > 0
+}
