@@ -13,10 +13,7 @@ const app = express()
 // Apply most middleware first
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(cors({
-    // @ts-ignore
-    origin: config.clientOrigins[config.nodeEnv]
-}))
+app.use(cors())
 app.use(helmet())
 app.use(morgan('tiny'))
 
