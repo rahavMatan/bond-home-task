@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express'
+import { APIError } from '../common/APIError'
 
-/**
- * JSON 404 response
- */
-const fourOhFour: RequestHandler = (req, res) => {
-    return res.status(404).json({ message: 'not found' })
+
+const fourOhFour: RequestHandler = (req, res, next) => {
+    return next(new APIError(404,'resource not found'))
 }
 
 export default fourOhFour
