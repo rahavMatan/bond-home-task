@@ -1,7 +1,7 @@
 import express, { RequestHandler } from "express";
 import { getTransactions, createTransaction } from './transaction.service'
-import { validateRequestBody } from "zod-express-middleware";
-import { createTransactionDTO } from "./transaction.dto";
+import { validateRequestBody, validateRequestQuery } from "zod-express-middleware";
+import { GetTransactionDTO, createTransactionDTO, getTransactionDTO } from "./transaction.dto";
 
 export const transactionRouter = express.Router({ mergeParams: true })
 
@@ -16,12 +16,13 @@ const createTransactionHandler:RequestHandler = async (req,res,next)=>{
 
 const getTrasnactionsHandler:RequestHandler = async (req,res,next)=>{
     const {account_id} = req.params
-    const [transactions, error] = await getTransactions(account_id)
+    const {fromDate, toDate} = req.query
+    const [transactions, error] = await getTransactions(account_id, {fromDate, toDate} as GetTransactionDTO)
     if(error){
         return next(error)
     }
     res.json({transactions})
 }
 
-transactionRouter.get('/transactions', getTrasnactionsHandler)
+transactionRouter.get('/transactions', validateRequestQuery(getTransactionDTO), getTrasnactionsHandler)
 transactionRouter.post('/transactions', validateRequestBody(createTransactionDTO) ,createTransactionHandler)

@@ -1,13 +1,27 @@
 import {AccountEntity, AccountStatus} from '../account/account.entity'
-import { UserEntity } from '../user/user.entity'
 import { TaskEither } from '../common/Either'
 import { TransactionEntity, TransactionType } from './transaction.entity'
 import {db, client} from '../db'
-import { CreateTransactionDTO } from './transaction.dto'
+import { CreateTransactionDTO, GetTransactionDTO } from './transaction.dto'
 import { AccountBlockedException, DailyWithrawLimitExceeded, InsuficientFundsException } from './transaction.exception'
+import {Filter} from 'mongodb'
 
-export const getTransactions = async (accountId:AccountEntity['id']):TaskEither<TransactionEntity[]>=>{
-    const transactions = await db.collection<TransactionEntity>('transactions').find({accountId}).toArray()
+export const getTransactions = async (
+    accountId:AccountEntity['id'],
+    params:GetTransactionDTO
+    ):TaskEither<TransactionEntity[]>=>{
+
+    const query:Filter<TransactionEntity> = { 
+        accountId, 
+    }
+    if(params.fromDate || params.toDate){
+        query.createdAt = {
+            $gte: params.fromDate ? new Date(params.fromDate) : undefined,
+            $lt: params.toDate ? new Date(params.toDate) : undefined 
+
+        }
+    }
+    const transactions = await db.collection<TransactionEntity>('transactions').find(query, {ignoreUndefined: true}).toArray()
     return [transactions, null]
 }
 
@@ -31,7 +45,7 @@ const handleDeposit = async (dto:CreateTransactionDTO, accountId:AccountEntity['
     try {
         // await session.startTransaction();
         await db.collection<AccountEntity>('accounts').updateOne({id:accountId},{$inc:{balance:dto.value}},{session})
-        await db.collection<TransactionEntity>('transaction').insertOne(trans,{session})
+        await db.collection<TransactionEntity>('transactions').insertOne(trans,{session})
         return [trans, null]
     } catch(e){
         console.error(e)

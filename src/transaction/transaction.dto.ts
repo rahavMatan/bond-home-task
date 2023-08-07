@@ -7,3 +7,10 @@ export const createTransactionDTO = z.object({
 })
 
 export type CreateTransactionDTO = z.infer<typeof createTransactionDTO>
+
+export const getTransactionDTO = z.object({
+    fromDate: z.string().datetime().optional(),
+    toDate: z.string().datetime().optional(),
+})
+
+export type GetTransactionDTO = z.infer<typeof getTransactionDTO>
